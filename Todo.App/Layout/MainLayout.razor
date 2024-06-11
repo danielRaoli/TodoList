@@ -1,0 +1,20 @@
+﻿﻿
+@inherits LayoutComponentBase
+
+<MudThemeProvider IsDarkMode="true"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+
+<MudLayout>
+    <MudAppBar>
+        <div class="d-flex justify-center"  style="width:100%">
+            <h1>Todo List...</h1>
+        </div>
+    </MudAppBar>
+    <MudMainContent>
+        <MudContainer>
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>

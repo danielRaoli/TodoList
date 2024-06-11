@@ -1,0 +1,48 @@
+﻿@page "/"
+
+
+@inherits GetAllPageComponent
+
+
+<div class="d-flex justify-center mt-10">
+    <MudContainer>
+        <EditForm class="d-flex" Model="@Model" OnValidSubmit="OnValidSubmitAsync">
+            <DataAnnotationsValidator />
+            <MudContainer>
+                <MudTextField Label="Tarefa" HelperText="Campo Obrigatorio" @bind-Value="Model.Description" For="@(()=> Model.Description)" />
+            </MudContainer>
+
+            @if (IsBusy)
+            {
+                <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+            }
+            else
+            {
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
+                    Salvar
+                </MudButton>
+            }
+        </EditForm>
+    </MudContainer>
+</div>
+
+<MudDataGrid Class="mt-4" Items="@Todos">
+    <Columns>
+        <PropertyColumn Property="x => x.Description" Title="Tarefa" />
+        <PropertyColumn Property="x => x.IsComplete.ToString()" Title="Status" />
+        <TemplateColumn Title="Ações" Class="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => OnDeleButtonClickAsync(context.Item.Id, context.Item.Description)" />
+                <a href="todo/atualizar/@context.Item.Id">
+                    <MudIconButton Color="Color.Info" Icon="@Icons.Material.Filled.Edit" />
+                </a>
+                <MudSwitch ReadOnly="true" Checked="@(Converter(context.Item.IsComplete))"
+                           Color="Color.Success"
+                           ThumbIcon="@(Converter(context.Item.IsComplete) ==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                           ThumbIconColor="Color.Default"
+                UnCheckedColor="Color.Error"><MudButton OnClick="() => OnChangedAsync(Converter(context.Item.IsComplete), context.Item.Id) " Color="Color.Transparent">@LabelAlternateButton(context.Item.IsComplete)</MudButton></MudSwitch>
+                </CellTemplate>
+
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
